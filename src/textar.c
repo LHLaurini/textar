@@ -229,11 +229,6 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 						*nameEnd = 0;
 						current = nameEnd + 1;
 					}
-
-					if (nameEnd[-1] == '/')
-					{
-						theOpenEntry.type = TEXTARENTRYTYPE_DIRECTORY;
-					}
 				}
 				else
 				{
@@ -245,6 +240,11 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 					originalNameEnd = *nameEnd;
 					*nameEnd = 0;
 					current = nameEnd + 1;
+				}
+
+				if (nameEnd[-1] == '/')
+				{
+					theOpenEntry.type = TEXTARENTRYTYPE_DIRECTORY;
 				}
 
 				theOpenEntry.path = name;
