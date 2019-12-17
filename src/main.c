@@ -146,7 +146,11 @@ int main(int argc, char** argv)
 
 	if (*args.directory)
 	{
-		chdir(args.directory);
+		if (chdir(args.directory))
+		{
+			fprintf(stderr, "%s: failed to change dir: %s\n",  argv[0], strerror(errno));
+			return 1;
+		}
 	}
 
 	bool success;
