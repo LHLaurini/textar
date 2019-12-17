@@ -265,7 +265,15 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 						{
 							if (theOpenEntry.type == TEXTARENTRYTYPE_FILE)
 							{
-								current = findWhitespace(current);
+								char* next = findWhitespace(current);
+								if (next)
+								{
+									current = next;
+								}
+								else
+								{
+									current = findEnd(current);
+								}
 								theOpenEntry.type = TEXTARENTRYTYPE_SYMLINK;
 								continue;
 							}
