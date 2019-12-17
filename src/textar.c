@@ -300,10 +300,11 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 							goto error;
 						}
 
+						size_t propLen = propEnd - current;
 						const char* value = propEnd + 1;
 						size_t valueLen = valueEnd - propEnd - 1;
 
-						if (strncmp(current, "ownerid", propEnd - current) == 0)
+						if (propLen == 7 && strncmp(current, "ownerid", propLen) == 0)
 						{
 							if (options & TEXTAROPTIONS_OWNID)
 							{
@@ -316,7 +317,7 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 								}
 							}
 						}
-						else if (strncmp(current, "ownername", propEnd - current) == 0)
+						else if (propLen == 9 && strncmp(current, "ownername", propLen) == 0)
 						{
 							if (options & TEXTAROPTIONS_OWNNAME)
 							{
@@ -344,7 +345,7 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 								theOpenEntry.owner = userName;
 							}
 						}
-						else if (strncmp(current, "mode", propEnd - current) == 0)
+						else if (propLen == 4 && strncmp(current, "mode", propLen) == 0)
 						{
 							if (options & TEXTAROPTIONS_MODE)
 							{
