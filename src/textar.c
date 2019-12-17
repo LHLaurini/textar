@@ -147,6 +147,23 @@ bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
 	return success;
 }
 
+bool closeEntryHelper(TextArEntry* theOpenEntry, IOFn close_entry, size_t numEmptyLines, void* userPtr)
+{
+	size_t linesToErase = numEmptyLines + 1;
+	if (linesToErase > 2)
+	{
+		linesToErase = 2;
+	}
+
+	theOpenEntry->data = (char*)&linesToErase;
+	if (!close_entry(theOpenEntry, userPtr))
+	{
+		setError("failed to close entry");
+		return false;
+	}
+	return true;
+}
+
 bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
                           ReadArchiveLineFn read_archive_line,
                           TextArOptions options, VerboseFn verbose, void* userPtr)
@@ -188,10 +205,8 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 				if (entryIsOpen)
 				{
 					entryIsOpen = false;
-					theOpenEntry.data = (char*)&numEmptyLines;
-					if (!close_entry(&theOpenEntry, userPtr))
+					if (!closeEntryHelper(&theOpenEntry, close_entry, numEmptyLines, userPtr))
 					{
-						setError("failed to close entry");
 						goto error;
 					}
 				}
@@ -427,10 +442,8 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 	if (entryIsOpen)
 	{
 		entryIsOpen = false;
-		theOpenEntry.data = (char*)&numEmptyLines;
-		if (!close_entry(&theOpenEntry, userPtr))
+		if (!closeEntryHelper(&theOpenEntry, close_entry, numEmptyLines, userPtr))
 		{
-			setError("failed to close entry");
 			goto error;
 		}
 	}
@@ -448,8 +461,7 @@ error:
 	if (entryIsOpen)
 	{
 		// Nothing we can do if it fails
-		theOpenEntry.data = (char*)&numEmptyLines;
-		close_entry(&theOpenEntry, userPtr);
+		closeEntryHelper(&theOpenEntry, close_entry, numEmptyLines, userPtr);
 		entryIsOpen = false;
 	}
 
