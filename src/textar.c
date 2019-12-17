@@ -370,6 +370,7 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 
 				if (!open_entry(&theOpenEntry, userPtr))
 				{
+					setError("failed to open entry");
 					goto error;
 				}
 
