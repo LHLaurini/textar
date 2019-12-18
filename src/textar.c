@@ -176,8 +176,6 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
 
 	char originalNameEnd;
 	char* nameEnd = NULL;
-	
-	/// \note: line can be either LF or NULL terminated
 
 	while (line = read_archive_line(userPtr))
 	{
