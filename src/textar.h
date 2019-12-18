@@ -1,4 +1,6 @@
 /// \file
+/// \brief Main header
+
 #pragma once
 
 #include <stdbool.h>
@@ -57,7 +59,9 @@ typedef char* (*ReadArchiveLineFn)(void* userPtr);
 /// - The underlying container is traversed only once;
 /// - Each entry must be returned once;
 /// - The returned pointer does **not** have to be unique;
-/// - If \p entry is \c NULL, the next entry is the first.
+/// - If \p entry is \c NULL, the next entry is the first;
+/// - \c (TextArEntry*)-1 should be returned in case of error;
+/// - ::textArSetError can optionally be called to signal a more meaningful error.
 ///
 /// \param append_archive Called to append data to the archive
 /// \param entry_iterator Called to iterate through entries
@@ -133,14 +137,6 @@ bool textArExtractArchive(IOFn open_entry,
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
 bool textArExtractArchiveFile(const char* fileName, TextArOptions options, VerboseFn verbose);
-
-bool appendArchiveFile(const char* data, void* userPtr);
-const TextArEntry* entryIteratorFile(const TextArEntry* entry, void* userPtr);
-
-bool openEntry(TextArEntry* entry, void* userPtr);
-bool appendEntry(TextArEntry* entry, void* userPtr);
-bool closeEntry(TextArEntry* entry, void* userPtr);
-char* readArchiveLine(void* userPtr);
 
 /// Return a string describing the last error.
 const char* textArErrorDesc();
