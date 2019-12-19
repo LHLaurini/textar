@@ -7,6 +7,7 @@ if [ ! -e "$TESTS_DIR/testdir" ]; then
 	tar xf "$TESTS_DIR/testdir.tar.xz" -C "$TESTS_DIR"
 fi
 
+rm -rf testdir
 ../src/textar -cf archivetest.ttar -C "$TESTS_DIR" testdir
 ../src/textar -xf archivetest.ttar
 
