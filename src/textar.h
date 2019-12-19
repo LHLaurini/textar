@@ -51,7 +51,8 @@ typedef char* (*ReadArchiveLineFn)(void* userPtr);
 /// memory directly.
 /// \p append_archive must be defined according to the following:
 /// - The NULL-terminated string \p data must be appended to the output archive;
-/// - \c true must be returned if the operation succeeded or \c false otherwise.
+/// - \c true must be returned if the operation succeeded or \c false otherwise;
+/// - ::textArSetError can optionally be called to report a more meaningful error.
 ///
 /// \p entry_iterator must be defined according to the following:
 /// - A pointer to a TextArEntry structure representing the next entry must be
@@ -61,7 +62,7 @@ typedef char* (*ReadArchiveLineFn)(void* userPtr);
 /// - The returned pointer does **not** have to be unique;
 /// - If \p entry is \c NULL, the next entry is the first;
 /// - \c (TextArEntry*)-1 should be returned in case of error;
-/// - ::textArSetError can optionally be called to signal a more meaningful error.
+/// - ::textArSetError can optionally be called to report a more meaningful error.
 ///
 /// \param append_archive Called to append data to the archive
 /// \param entry_iterator Called to iterate through entries
@@ -90,7 +91,8 @@ bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
 /// - The entry must be ready for appending after this function is called;
 /// - The \c path field is only guaranteed to be valid during this function call;
 /// - The \c data field has no meaning;
-/// - \c true must be returned if the operation succeeded or \c false otherwise.
+/// - \c true must be returned if the operation succeeded or \c false otherwise;
+/// - ::textArSetError can optionally be called to report a more meaningful error.
 ///
 /// \p append_entry must be defined according to the following:
 /// - The string in the field \c data must be appended to the entry;
@@ -100,19 +102,22 @@ bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
 /// - Calls can be ignored if \c type is TEXTARENTRYTYPE_DIRECTORY;
 /// - If \c type is TEXTARENTRYTYPE_SYMLINK, the target is contained in \c data;
 /// - Further calls can be ignored if \c type is TEXTARENTRYTYPE_SYMLINK;
-/// - \c true must be returned if the operation succeeded or \c false otherwise.
+/// - \c true must be returned if the operation succeeded or \c false otherwise;
+/// - ::textArSetError can optionally be called to report a more meaningful error.
 ///
 /// \p close_entry must be defined according to the following:
 /// - No more data will be appended to the entry after this function;
 /// - The \c path field may not be valid during this function call;
 /// - The \c data field is a pointer to a size_t containing the number of bytes
 ///   which should be discarded at the end of the file;
-/// - \c true must be returned if the operation succeeded or \c false otherwise.
+/// - \c true must be returned if the operation succeeded or \c false otherwise;
+/// - ::textArSetError can optionally be called to report a more meaningful error.
 ///
 /// \p read_archive_line must be defined according to the following:
 /// - The function must return a string containing the next line in the archive;
 /// - If no more lines are available, \c NULL should be returned;
-/// - The returned string may be either NULL-terminated or LF-terminated.
+/// - The returned string may be either NULL-terminated or LF-terminated;
+/// - ::textArSetError can optionally be called to report a more meaningful error.
 ///
 /// \param open_entry        Called to open the entry
 /// \param append_entry      Called to append data to the entry

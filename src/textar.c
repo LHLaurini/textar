@@ -13,17 +13,15 @@ bool textArCreateArchive(AppendArchiveFn append_archive,
 						 TextArOptions options, VerboseFn verbose,
 						 void* userPtr)
 {
+	textArClearError();
+
 	const TextArEntry* entry = NULL;
 
 	while (entry = entry_iterator(entry, userPtr))
 	{
 		if (entry == (TextArEntry*)-1)
 		{
-			if (!textArErrorDesc())
-			{
-				textArSetError("failed to iterate through entries");
-			}
-
+			textArSetError("failed to iterate through entries");
 			return false;
 		}
 
@@ -102,6 +100,8 @@ bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
                           ReadArchiveLineFn read_archive_line,
                           TextArOptions options, VerboseFn verbose, void* userPtr)
 {
+	textArClearError();
+
 	char* line;
 	TextArEntry theOpenEntry;
 	bool entryIsOpen = false;
@@ -411,17 +411,29 @@ const char* textArErrorFile()
 	return textArSetErrorFile(NULL);
 }
 
-const char* textArSetError(const char* err) 
+const char* textArSetError(const char* err)
 {
-	static const char* error;
+	static const char* error = NULL;
 	if (err)
 	{
-		error = err;
+		if (!error)
+		{
+			error = err;
+		}
+		else if (!err[0])
+		{
+			error = NULL;
+		}
 	}
 	return error;
 }
 
-const char* textArSetErrorFile(const char* err) 
+void textArClearError()
+{
+	textArSetError("");
+}
+
+const char* textArSetErrorFile(const char* err)
 {
 	static char file[PATH_MAX] = "";
 	if (err)
