@@ -16,3 +16,4 @@ bool stdImpOpenEntry(TextArEntry* entry, void* userPtr);
 bool stdImpAppendEntry(TextArEntry* entry, void* userPtr);
 bool stdImpCloseEntry(TextArEntry* entry, void* userPtr);
 char* stdImpReadArchiveLine(void* userPtr);
+char* stdImpFFMReadArchiveLine(void* userPtr);

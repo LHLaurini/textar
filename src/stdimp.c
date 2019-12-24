@@ -63,7 +63,7 @@ bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
 
 struct UserData2
 {
-	FILE* inputFile;
+	void* inputFile;
 	int entryFile;
 	char* lineBuffer;
 	size_t lineBufferSize;
@@ -94,6 +94,33 @@ bool textArExtractArchiveFile(const char* fileName, TextArOptions options, Verbo
 		textArSetError("failed to close archive");
 		success = false;
 	}
+
+	if (userData.lineBuffer)
+	{
+		free(userData.lineBuffer);
+		userData.lineBuffer = NULL;
+	}
+
+	if (userData.entryName)
+	{
+		free(userData.entryName);
+		userData.entryName = NULL;
+	}
+
+	errno = funcErrno;
+	return success;
+}
+
+bool textArExtractArchiveFileFromMemory(char* data, TextArOptions options, VerboseFn verbose)
+{
+	textArSetErrorFile(NULL);
+
+	struct UserData2 userData = { data, -1, NULL, 0, NULL };
+
+	bool success = textArExtractArchive(stdImpOpenEntry, stdImpAppendEntry,
+	                                    stdImpCloseEntry, stdImpFFMReadArchiveLine,
+	                                    options, verbose, &userData);
+	int funcErrno = errno;
 
 	if (userData.lineBuffer)
 	{
@@ -531,4 +558,31 @@ char* stdImpReadArchiveLine(void* userPtr)
 	}
 
 	return userData->lineBuffer;
+}
+
+char* stdImpFFMReadArchiveLine(void* userPtr)
+{
+	struct UserData2* userData = (struct UserData2*)userPtr;
+	errno = 0;
+	
+	char* line = (char*)userData->inputFile;
+
+	if (line)
+	{
+		char* end = findEnd(line);
+		if (*end) // is LF
+		{
+			userData->inputFile = end + 1;
+		}
+		else // is NULL
+		{
+			userData->inputFile = NULL;
+		}
+		
+		return line;
+	}
+	else
+	{
+		return NULL;
+	}
 }

@@ -141,6 +141,13 @@ bool textArExtractArchive(IOFn open_entry,
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
 bool textArExtractArchiveFile(const char* fileName, TextArOptions options, VerboseFn verbose);
+/// Create an archive using an alternate standard implementation.
+/// \param data     String containing the archive data (must be writeable)
+/// \param options  TextArOptions OR-ed together
+/// \param verbose  Function to call to show messages to the user
+/// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
+///         ::textArErrorFile and \c errno for details.
+bool textArExtractArchiveFileFromMemory(char* data, TextArOptions options, VerboseFn verbose);
 
 /// Return a string describing the last error.
 const char* textArErrorDesc();
