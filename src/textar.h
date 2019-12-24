@@ -136,7 +136,6 @@ bool textArExtractArchive(IOFn open_entry,
                           void* userPtr);
 /// Create an archive using the default implementation.
 /// \param fileName File name (and path) of the archive
-/// \param entries  NULL-terminated array of strings to each entry
 /// \param options  TextArOptions OR-ed together
 /// \param verbose  Function to call to show messages to the user
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
