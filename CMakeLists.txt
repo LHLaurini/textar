@@ -12,4 +12,4 @@ configure_file(textar.pc.in textar.pc @ONLY)
 
 install(TARGETS textar-bin RUNTIME)
 install(TARGETS textar LIBRARY)
-install(FILES textar.pc DESTINATION lib/pkgconfig)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/textar.pc DESTINATION lib/pkgconfig)
