@@ -10,7 +10,7 @@
 
 bool textArCreateArchive(AppendArchiveFn append_archive,
 						 EntryIteratorFn entry_iterator,
-						 TextArOptions options, VerboseFn verbose,
+						 int options, VerboseFn verbose,
 						 void* userPtr)
 {
 	textArClearError();
@@ -98,7 +98,7 @@ static bool closeEntryHelper(TextArEntry* theOpenEntry, IOFn close_entry,
 
 bool textArExtractArchive(IOFn open_entry, IOFn append_entry, IOFn close_entry,
                           ReadArchiveLineFn read_archive_line,
-                          TextArOptions options, VerboseFn verbose, void* userPtr)
+                          int options, VerboseFn verbose, void* userPtr)
 {
 	textArClearError();
 

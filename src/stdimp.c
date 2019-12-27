@@ -27,7 +27,7 @@ struct UserData
 };
 
 bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
-                             TextArOptions options, VerboseFn verbose)
+                             int options, VerboseFn verbose)
 {
 	textArSetErrorFile(NULL);
 	List* entryPathList = listCreate();
@@ -70,7 +70,7 @@ struct UserData2
 	char* entryName;
 };
 
-bool textArExtractArchiveFile(const char* fileName, TextArOptions options, VerboseFn verbose)
+bool textArExtractArchiveFile(const char* fileName, int options, VerboseFn verbose)
 {
 	textArSetErrorFile(NULL);
 
@@ -111,7 +111,7 @@ bool textArExtractArchiveFile(const char* fileName, TextArOptions options, Verbo
 	return success;
 }
 
-bool textArExtractArchiveFileFromMemory(char* data, TextArOptions options, VerboseFn verbose)
+bool textArExtractArchiveFileFromMemory(char* data, int options, VerboseFn verbose)
 {
 	textArSetErrorFile(NULL);
 

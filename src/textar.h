@@ -79,7 +79,7 @@ typedef char* (*ReadArchiveLineFn)(void* userPtr);
 ///         ::textArErrorFile and \c errno for details.
 EXTERN bool textArCreateArchive(AppendArchiveFn append_archive,
                                 EntryIteratorFn entry_iterator,
-                                TextArOptions options, VerboseFn verbose,
+                                int options, VerboseFn verbose,
                                 void* userPtr);
 /// Create an archive using the default implementation.
 /// \param fileName File name (and path) of the archive
@@ -89,7 +89,7 @@ EXTERN bool textArCreateArchive(AppendArchiveFn append_archive,
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
 EXTERN bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
-                                    TextArOptions options, VerboseFn verbose);
+                                    int options, VerboseFn verbose);
 
 /// Extract an archive using a custom implementation. This function allocates no
 /// memory directly.
@@ -138,7 +138,7 @@ EXTERN bool textArExtractArchive(IOFn open_entry,
                                  IOFn append_entry,
                                  IOFn close_entry,
                                  ReadArchiveLineFn read_archive_line,
-                                 TextArOptions options, VerboseFn verbose,
+                                 int options, VerboseFn verbose,
                                  void* userPtr);
 /// Create an archive using the default implementation.
 /// \param fileName File name (and path) of the archive
@@ -146,14 +146,14 @@ EXTERN bool textArExtractArchive(IOFn open_entry,
 /// \param verbose  Function to call to list files extracted from the archive
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
-EXTERN bool textArExtractArchiveFile(const char* fileName, TextArOptions options, VerboseFn verbose);
+EXTERN bool textArExtractArchiveFile(const char* fileName, int options, VerboseFn verbose);
 /// Create an archive using an alternate standard implementation.
 /// \param data     String containing the archive data (must be writeable)
 /// \param options  TextArOptions OR-ed together
 /// \param verbose  Function to call to list files extracted from the archive
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
-EXTERN bool textArExtractArchiveFileFromMemory(char* data, TextArOptions options, VerboseFn verbose);
+EXTERN bool textArExtractArchiveFileFromMemory(char* data, int options, VerboseFn verbose);
 
 /// Return a string describing the last error.
 EXTERN const char* textArErrorDesc();
