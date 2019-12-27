@@ -67,7 +67,7 @@ typedef char* (*ReadArchiveLineFn)(void* userPtr);
 /// \param append_archive Called to append data to the archive
 /// \param entry_iterator Called to iterate through entries
 /// \param options        TextArOptions OR-ed together
-/// \param verbose        Function to call to show messages to the user
+/// \param verbose        Function to call to list files included in the archive
 /// \param userPtr        Data passed to implementation
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
@@ -79,7 +79,7 @@ bool textArCreateArchive(AppendArchiveFn append_archive,
 /// \param fileName File name (and path) of the archive
 /// \param entries  NULL-terminated array of strings to each entry
 /// \param options  TextArOptions OR-ed together
-/// \param verbose  Function to call to show messages to the user
+/// \param verbose  Function to call to list files included in the archive
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
 bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
@@ -124,7 +124,7 @@ bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
 /// \param close_entry       Called to close the entry
 /// \param read_archive_line Called to read the next line from the archive
 /// \param options        TextArOptions OR-ed together
-/// \param verbose        Function to call to show messages to the user
+/// \param verbose        Function to call to list files extracted from the archive
 /// \param userPtr        Data passed to implementation
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
@@ -137,14 +137,14 @@ bool textArExtractArchive(IOFn open_entry,
 /// Create an archive using the default implementation.
 /// \param fileName File name (and path) of the archive
 /// \param options  TextArOptions OR-ed together
-/// \param verbose  Function to call to show messages to the user
+/// \param verbose  Function to call to list files extracted from the archive
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
 bool textArExtractArchiveFile(const char* fileName, TextArOptions options, VerboseFn verbose);
 /// Create an archive using an alternate standard implementation.
 /// \param data     String containing the archive data (must be writeable)
 /// \param options  TextArOptions OR-ed together
-/// \param verbose  Function to call to show messages to the user
+/// \param verbose  Function to call to list files extracted from the archive
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
 bool textArExtractArchiveFileFromMemory(char* data, TextArOptions options, VerboseFn verbose);
