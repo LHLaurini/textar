@@ -9,6 +9,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#ifdef __cplusplus
+#define EXTERN extern "C"
+#else
+#define EXTERN
+#endif
+
 typedef enum TextArEntryType
 {
 	TEXTARENTRYTYPE_FILE,
@@ -71,10 +77,10 @@ typedef char* (*ReadArchiveLineFn)(void* userPtr);
 /// \param userPtr        Data passed to implementation
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
-bool textArCreateArchive(AppendArchiveFn append_archive,
-                         EntryIteratorFn entry_iterator,
-                         TextArOptions options, VerboseFn verbose,
-                         void* userPtr);
+EXTERN bool textArCreateArchive(AppendArchiveFn append_archive,
+                                EntryIteratorFn entry_iterator,
+                                TextArOptions options, VerboseFn verbose,
+                                void* userPtr);
 /// Create an archive using the default implementation.
 /// \param fileName File name (and path) of the archive
 /// \param entries  NULL-terminated array of strings to each entry
@@ -82,8 +88,8 @@ bool textArCreateArchive(AppendArchiveFn append_archive,
 /// \param verbose  Function to call to list files included in the archive
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
-bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
-                             TextArOptions options, VerboseFn verbose);
+EXTERN bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
+                                    TextArOptions options, VerboseFn verbose);
 
 /// Extract an archive using a custom implementation. This function allocates no
 /// memory directly.
@@ -128,28 +134,28 @@ bool textArCreateArchiveFile(const char* fileName, const char* const * entries,
 /// \param userPtr        Data passed to implementation
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
-bool textArExtractArchive(IOFn open_entry,
-                          IOFn append_entry,
-                          IOFn close_entry,
-                          ReadArchiveLineFn read_archive_line,
-                          TextArOptions options, VerboseFn verbose,
-                          void* userPtr);
+EXTERN bool textArExtractArchive(IOFn open_entry,
+                                 IOFn append_entry,
+                                 IOFn close_entry,
+                                 ReadArchiveLineFn read_archive_line,
+                                 TextArOptions options, VerboseFn verbose,
+                                 void* userPtr);
 /// Create an archive using the default implementation.
 /// \param fileName File name (and path) of the archive
 /// \param options  TextArOptions OR-ed together
 /// \param verbose  Function to call to list files extracted from the archive
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
-bool textArExtractArchiveFile(const char* fileName, TextArOptions options, VerboseFn verbose);
+EXTERN bool textArExtractArchiveFile(const char* fileName, TextArOptions options, VerboseFn verbose);
 /// Create an archive using an alternate standard implementation.
 /// \param data     String containing the archive data (must be writeable)
 /// \param options  TextArOptions OR-ed together
 /// \param verbose  Function to call to list files extracted from the archive
 /// \return \c true if succeeded, \c false otherwise. Use ::textArErrorDesc,
 ///         ::textArErrorFile and \c errno for details.
-bool textArExtractArchiveFileFromMemory(char* data, TextArOptions options, VerboseFn verbose);
+EXTERN bool textArExtractArchiveFileFromMemory(char* data, TextArOptions options, VerboseFn verbose);
 
 /// Return a string describing the last error.
-const char* textArErrorDesc();
+EXTERN const char* textArErrorDesc();
 /// Return a string to the path of the file that caused the error.
-const char* textArErrorFile();
+EXTERN const char* textArErrorFile();
