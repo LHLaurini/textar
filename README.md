@@ -1,3 +1,5 @@
+Note: this repository has been marked read-only. Similar functionality can be achieved with `diff` and `patch`.
+
 # textar
 
 *textar* is a tar-like program for creating plain text archives from plain text files. It is written in plain C and can be used as a library. 
